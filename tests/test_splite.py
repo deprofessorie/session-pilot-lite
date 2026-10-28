@@ -28,6 +28,7 @@ class SPLiteTest(unittest.TestCase):
         os.environ["SESSION_PILOT_LITE_HOME"] = str(self.tmp / "home")
         os.environ["SESSION_PILOT_LITE_NO_DEFAULTS"] = "1"
         os.environ["SESSION_PILOT_LITE_ROOTS"] = str(self.skills)
+        os.environ["SESSION_PILOT_NO_AUTO_CONV"] = "1"
         import importlib
         import splite
         self.splite = importlib.reload(splite)

@@ -232,11 +232,35 @@ def rank(items, query, k=2):
     return best
 
 
+def detect_active_conversation():
+    for ev in ("SESSION_PILOT_ID", "CONVERSATION_ID", "SESSION_ID", "CHAT_ID"):
+        v = os.environ.get(ev)
+        if v:
+            return v, None
+    brain_root = Path.home() / ".gemini" / "antigravity" / "brain"
+    if brain_root.is_dir():
+        candidates = []
+        now = time.time()
+        for d in brain_root.iterdir():
+            if d.is_dir() and len(d.name) == 36 and d.name.count("-") == 4:
+                tfile = d / ".system_generated" / "logs" / "transcript.jsonl"
+                mtime = tfile.stat().st_mtime if tfile.is_file() else d.stat().st_mtime
+                if now - mtime < 900:
+                    candidates.append((mtime, d.name, str(d)))
+        if candidates:
+            candidates.sort(key=lambda x: -x[0])
+            return candidates[0][1], candidates[0][2]
+    return None, None
+
+
 def session_id(arg):
-    sid = arg or os.environ.get("SESSION_PILOT_ID")
-    if not sid:
-        sid = "auto-" + hashlib.sha1(os.getcwd().lower().encode()).hexdigest()[:10]
-    return re.sub(r"[^A-Za-z0-9._-]", "_", sid)[:100]
+    if arg:
+        return re.sub(r"[^A-Za-z0-9._-]", "_", arg)[:100]
+    if not os.environ.get("SESSION_PILOT_NO_AUTO_CONV"):
+        cid, _ = detect_active_conversation()
+        if cid:
+            return re.sub(r"[^A-Za-z0-9._-]", "_", cid)[:100]
+    return "auto-" + hashlib.sha1(os.getcwd().lower().encode()).hexdigest()[:10]
 
 
 def gc_sessions():
