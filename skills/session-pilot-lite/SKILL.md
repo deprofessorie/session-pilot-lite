@@ -17,9 +17,9 @@ Minimal-token memory & skill scout for fast turns.
    Run `SPL recall [--session ID]`. If `NEW SESSION`, start fresh. Otherwise continue from `next:`.
 
 2. **Route (tasks only — skip for greetings & Q&A):**
-   Run `SPL find "<3-6 keywords>"`.
+   Run `SPL find "<tech/role keywords>"`. (Strip business domain nouns like "family tree"; query tech stack & engineering roles e.g. "react frontend", "software architect").
    - `match: strong` → read only the returned SKILL.md path and follow it.
-   - `match: none` → proceed with general AI capability or ask user.
+   - `match: none` → re-triage by functional engineering role or ask user. Never write unguided code blindly.
 
 3. **Checkpoint (after meaningful progress):**
    Run `SPL save [--session ID] --done "<action>" --next "<step>" [--goal "<one line>"]`.
