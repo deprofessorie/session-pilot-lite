@@ -1,0 +1,12 @@
+---
+description: Session Pilot Lite per-chat memory and fast task router
+globs: *
+alwaysApply: true
+---
+<!-- session-pilot-lite:start -->
+## Session Pilot Lite (always on)
+
+At the start of every chat: `python ~/.cursor/skills/session-pilot-lite/scripts/splite.py recall`.
+On task prompt: `python ~/.cursor/skills/session-pilot-lite/scripts/splite.py find "<3-6 keywords>"`. Read top SKILL.md.
+After progress: `python ~/.cursor/skills/session-pilot-lite/scripts/splite.py save --done "<action>" --next "<step>"`.
+<!-- session-pilot-lite:end -->
